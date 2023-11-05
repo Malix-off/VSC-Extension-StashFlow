@@ -1,41 +1,71 @@
-# [@Malix-Off](https://github.com/Malix-Off) [Repository Template](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template)
+# StashFlow README
 
-## Usage
-
-1. [ ] [Create a repository from this template](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template#creating-a-repository-from-a-template)
-2. [ ] Copy all [this repository GitHub Settings](https://github.com/Malix-Off/Template/blob/master/README.md#github-settings)
+This is the README for your extension "StashFlow". After writing up a brief description, we recommend including the following sections.
 
 ## Features
 
-- ### GitHub Labels
+Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
 
-- ### [GitHub Issue and Pull Request Template](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/about-issue-and-pull-request-templates)
+For example if there is an image subfolder under your extension project workspace:
 
-- ### [GitHub Project Template](https://docs.github.com/en/issues/planning-and-tracking-with-projects/managing-your-project/managing-project-templates-in-your-organization#copying-a-project-as-a-template)
+\!\[feature X\]\(images/feature-x.png\)
 
-The best starting [GitHub project template](https://docs.github.com/en/issues/planning-and-tracking-with-projects/managing-your-project/managing-project-templates-in-your-organization#copying-a-project-as-a-template) for any project scale
+> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
 
-- ### [GitHub Discussion Category Form](https://docs.github.com/en/discussions/managing-discussions-for-your-community/creating-discussion-category-forms)
+## Requirements
 
-- ###  GitHub Actions
+If you have any requirements or dependencies, add a section describing those and how to install and configure them.
 
-Optimized for [Trunk-Based Development](https://trunkbaseddevelopment.com/)
+## Extension Settings
 
-- On issue create:
-	- [ ] [Create a branch named as the issue ID and link it to the created issue](https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-a-branch-for-an-issue)
-		- On first commit push to this branch:
-			- [ ] Create a [draft pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/changing-the-stage-of-a-pull-request#marking-a-pull-request-as-ready-for-review) to the [parent issue](https://docs.github.com/en/issues/managing-your-tasks-with-tasklists/about-tasklists#about-tasklists-and-issue-hierarchy:~:text=You%20can%20create-,parent,-and%20child%20relationships) if any, else master
-- On push to master:
-	- [ ] Create a [draft release](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository#:~:text=release%20later%2C%20click-,Save%20draft,-.%20You%20can%20then) with a tag annoted with the latest semver tag incremented by one patch 
+Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
 
-- ### GitHub Files
+For example:
 
-Fully featued with GitHub files
+This extension contributes the following settings:
 
-- ### GitHub Settings
+* `myExtension.enable`: Enable/disable this extension.
+* `myExtension.thing`: Set to `blah` to do something.
 
-GitHub Settings cannot be embeded in a [GitHub repository template](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template) copied data, therefore, you have to [copy them manually](https://github.com/Malix-Off/Template/blob/master/README.md#:~:text=Copy%20all%20this%20repository%20GitHub%20Settings)
+## Known Issues
 
-<!--
-1. 
--->
+Calling out known issues can help limit users opening duplicate issues against your extension.
+
+## Release Notes
+
+Users appreciate release notes as you update your extension.
+
+### 1.0.0
+
+Initial release of ...
+
+### 1.0.1
+
+Fixed issue #.
+
+### 1.1.0
+
+Added features X, Y, and Z.
+
+---
+
+## Following extension guidelines
+
+Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
+
+* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
+
+## Working with Markdown
+
+You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
+
+* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
+* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
+* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
+
+## For more information
+
+* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
+* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+
+**Enjoy!**
