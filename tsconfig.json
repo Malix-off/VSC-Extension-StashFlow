@@ -9,7 +9,6 @@
 		"verbatimModuleSyntax": true,
 		"composite": true,
 		"sourceMap": true,
-		"rootDir": "src",
 		"strict": true,
 		"resolveJsonModule": true,
 		"isolatedModules": true,
@@ -21,6 +20,7 @@
 		"noImplicitOverride": true,
 	},
 	"include": [
-		"src"
+		"src",
+		"package.json"
 	],
 }
