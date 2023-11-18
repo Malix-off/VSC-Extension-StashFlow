@@ -108,23 +108,15 @@
 	"extensionDependencies": [
 		"vscode.git"
 	],
-	},
 	"devDependencies": {
-		"@types/mocha": "^10.0.3",
-		"@types/node": "~18.18.8",
-		"@types/vscode": "^1.84.0",
-		"@typescript-eslint/eslint-plugin": "^6.9.1",
-		"@typescript-eslint/parser": "^6.9.1",
 		"@vscode/test-electron": "^2.3.6",
 		"@vscode/vsce": "^2.22.0",
-		"eslint": "^8.53.0",
-		"glob": "^10.3.10",
-		"mocha": "^10.2.0",
-		"pnpm": "^8.10.2",
+		"pnpm": "^8.10.5",
+		"vite": "^5.0.0",
 		"typescript": "^5.2.2"
 	},
 	"dependencies": {
-		"generator-code": "^1.8.0",
-		"yo": "^4.3.1"
+		"@types/node": "^20.9.0",
+		"@types/vscode": "^1.84.1"
 	}
 }
