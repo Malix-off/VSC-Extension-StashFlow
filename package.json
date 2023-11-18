@@ -5,6 +5,7 @@
 	"description": "Stash or Rebase Changes upon Switching Branches",
 	"main": "src/main.ts",
 	"type": "module",
+	"icon": "public/logo.png",
 	"scripts": {
 		"vscode:prepublish": "pnpm run compile",
 		"compile": "tsc -p ./",
