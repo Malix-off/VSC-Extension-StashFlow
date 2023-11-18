@@ -112,11 +112,11 @@
 		"@vscode/test-electron": "^2.3.6",
 		"@vscode/vsce": "^2.22.0",
 		"pnpm": "^8.10.5",
-		"vite": "^5.0.0",
-		"typescript": "^5.2.2"
+		"typescript": "^5.2.2",
+		"vite": "^5.0.0"
 	},
 	"dependencies": {
-		"@types/node": "^20.9.0",
+		"@types/node": "^20.9.1",
 		"@types/vscode": "^1.84.1"
 	}
 }
