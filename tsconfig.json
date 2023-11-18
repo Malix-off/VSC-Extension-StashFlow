@@ -1,17 +1,22 @@
 {
 	"compilerOptions": {
-		"module": "Node16",
-		"target": "ES2022",
-		"outDir": "out",
-		"lib": [
-			"ES2022"
-		],
-		"verbatimModuleSyntax": true,
+		// VSCode Extension
+		"target": "ESNext",
+		"module": "ESNext",
+		// Build
+		"skipLibCheck": true,
 		"composite": true,
 		"sourceMap": true,
-		"strict": true,
+		// Bundler
+		"moduleResolution": "bundler",
+		"allowImportingTsExtensions": true,
 		"resolveJsonModule": true,
 		"isolatedModules": true,
+		"noEmit": true,
+		// Standard
+		"outDir": "out",
+		// Lint
+		"strict": true,
 		"noImplicitReturns": true,
 		"exactOptionalPropertyTypes": true,
 		"noUnusedLocals": true,
