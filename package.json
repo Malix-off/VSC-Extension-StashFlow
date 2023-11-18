@@ -1,18 +1,19 @@
 {
-	"name": "vsc-extension-stashflow",
+	"name": "stashflow",
 	"displayName": "StashFlow",
 	"version": "0.0.1",
 	"description": "Stash or Rebase Changes upon Switching Branches",
 	"main": "src/main.ts",
 	"type": "module",
 	"icon": "public/logo.png",
+	"private": false,
+	"pricing": "Free",
+	"qna": "marketplace",
 	"scripts": {
-		"vscode:prepublish": "pnpm run compile",
-		"compile": "tsc -p ./",
-		"watch": "tsc -watch -p ./",
-		"pretest": "pnpm run compile && pnpm run lint",
-		"lint": "eslint src --ext ts",
-		"test": "node ./out/test/runTest.js"
+		"dev": "vite",
+		"build": "tsc && vite build",
+		"preview": "vite preview",
+		"vscode:prepublish": "pnpm run build"
 	},
 	"repository": {
 		"type": "git",
@@ -29,17 +30,84 @@
 		"Branches",
 		"Automatic"
 	],
+	"categories": [
+		"SCM Providers"
+	],
 	"author": {
 		"name": "Malix",
 		"email": "alixbrunetcontact@gmail.com",
 		"url": "https://github.com/Malix-off/"
 	},
+	"publisher": "Malix",
 	"bugs": {
 		"url": "https://github.com/Malix-off/VSC-Extension-StashFlow/issues"
 	},
 	"homepage": "https://github.com/Malix-off/VSC-Extension-StashFlow#readme",
 	"engines": {
-		"vscode": "^1.84.0"
+		"vscode": "^1.74.0"
+	},
+	"activationEvents": [
+		"workspaceContains:.git/HEAD"
+	],
+	"contributes": {
+		"configuration": {
+			"title": "StashFlow",
+			"properties": {
+				"stashflow.branchSwitchingOutAction": {
+					"type": "string",
+					"default": "prompt",
+					"enum": [
+						"prompt",
+						"stash",
+						"stashIncludeUntracked",
+						"stashStaged",
+						"rebase"
+					],
+					"markdownDescription": "The Action to Execute when Switching Out of A Branch with Uncommitted Changes."
+				},
+				"stashflow.branchSwitchingBackAction": {
+					"type": "string",
+					"default": "pop",
+					"enum": [
+						"prompt",
+						"pop",
+						"apply",
+						"nothing"
+					],
+					"markdownDescription": "The Action to Execute when Switching Back to A Branch with Uncommitted Changes Previously Stashed by StashFlow."
+				}
+			}
+		},
+		"commands": [
+			{
+				"command": "stashflow.changeOutAction",
+				"title": "Change Branch Switching Out Action"
+			},
+			{
+				"command": "stashflow.changeBackAction",
+				"title": "Change Branch Switching Back Action"
+			}
+		]
+	},
+	"sponsor": {
+		"url": "https://github.com/sponsors/Malix-off"
+	},
+	"extensionKind": [
+		"workspace"
+	],
+	"capabilities": {
+		"untrustedWorkspaces": {
+			"supported": false,
+			"description": "Git is not available in untrusted workspaces"
+		},
+		"virtualWorkspaces": {
+			"supported": false,
+			"description": "Git Stash is not available in virtual workspaces"
+		}
+	},
+	"extensionDependencies": [
+		"vscode.git"
+	],
 	},
 	"devDependencies": {
 		"@types/mocha": "^10.0.3",
