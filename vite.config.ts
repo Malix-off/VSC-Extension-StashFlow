@@ -8,6 +8,7 @@ export default defineConfig({
 			external: ['vscode'],
 			output: {
 				entryFileNames: 'main.js',
+				format: 'cjs'
 			}
 		}
 	}
