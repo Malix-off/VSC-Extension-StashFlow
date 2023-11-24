@@ -4,7 +4,7 @@
 	"version": "0.0.1",
 	"description": "Stash or Rebase Changes upon Switching Branches",
 	"main": "dist/main.js",
-	"type": "module",
+	"type": "commonjs",
 	"icon": "public/logo.png",
 	"private": false,
 	"pricing": "Free",
