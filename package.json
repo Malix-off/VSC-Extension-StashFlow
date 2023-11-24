@@ -3,14 +3,14 @@
 	"displayName": "StashFlow",
 	"version": "0.0.1",
 	"description": "Stash or Rebase Changes upon Switching Branches",
-	"main": "src/main.ts",
-	"type": "module",
+	"main": "dist/main.js",
+	"type": "commonjs",
 	"icon": "public/logo.png",
 	"private": false,
 	"pricing": "Free",
 	"qna": "marketplace",
 	"scripts": {
-		"dev": "vite",
+		"dev": "vite dev",
 		"build": "tsc && vite build",
 		"preview": "vite preview",
 		"vscode:prepublish": "pnpm run build"

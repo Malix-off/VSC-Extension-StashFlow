@@ -14,7 +14,7 @@
 		"isolatedModules": true,
 		"noEmit": true,
 		// Standard
-		"outDir": "out",
+		"outDir": "dist",
 		// Lint
 		"strict": true,
 		"noImplicitReturns": true,
