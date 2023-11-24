@@ -9,7 +9,8 @@ export default defineConfig({
 			output: {
 				entryFileNames: 'main.js',
 				format: 'cjs'
-			}
-		}
-	}
+			},
+		},
+		sourcemap: true,
+	},
 });
