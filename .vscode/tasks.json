@@ -3,14 +3,14 @@
 	"tasks": [
 		{
 			"type": "npm",
-			"script": "watch",
+			"script": "build",
 			"group": {
 				"kind": "build",
 				"isDefault": true
 			},
 			"problemMatcher": [],
-			"label": "npm: watch",
-			"detail": "pnpm run build --watch"
+			"label": "npm: build",
+			"detail": "pnpm run build"
 		}
 	]
 }
