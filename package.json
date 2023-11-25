@@ -46,7 +46,7 @@
 		"vscode": "^1.74.0"
 	},
 	"activationEvents": [
-		"workspaceContains:.git/HEAD"
+		"onFileSystem:git"
 	],
 	"contributes": {
 		"configuration": {
