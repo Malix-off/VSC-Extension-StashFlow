@@ -10,9 +10,8 @@
 	"pricing": "Free",
 	"qna": "marketplace",
 	"scripts": {
-		"dev": "vite dev",
 		"build": "tsc && vite build",
-		"preview": "vite preview",
+		"watch": "pnpm run build --watch",
 		"vscode:prepublish": "pnpm run build"
 	},
 	"repository": {
