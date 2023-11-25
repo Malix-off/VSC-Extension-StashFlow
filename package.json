@@ -80,11 +80,15 @@
 		"commands": [
 			{
 				"command": "stashflow.changeOutAction",
-				"title": "Change Branch Switching Out Action"
+				"category": "StashFlow",
+				"title": "Change Branch Switching Out Action",
+				"icon": "$(debug-step-out)"
 			},
 			{
 				"command": "stashflow.changeBackAction",
-				"title": "Change Branch Switching Back Action"
+				"category": "StashFlow",
+				"title": "Change Branch Switching Back Action",
+				"icon": "$(debug-step-into)"
 			}
 		]
 	},
