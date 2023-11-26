@@ -7,6 +7,21 @@ interface CommandWithCallback extends Command {
 	callback: CommandCallback,
 }
 
+function getValidCommandWithCallback(command: Command): CommandWithCallback | void {
+	const callbackOfCommand = getCallbackOfCommand(command);
+	if (callbackOfCommand) {
+		return { ...command, callback: callbackOfCommand };
+	}
+}
+
+function getValidCommandWithCallbackList(commandList: Command[]): CommandWithCallback[] {
+	return commandList
+		.map(getValidCommandWithCallback)
+		.filter((maybeCommandWithCallback): maybeCommandWithCallback is CommandWithCallback => {
+			return maybeCommandWithCallback !== undefined;
+		});
+}
+
 function getCallbackOfCommand(command: Command): CommandCallback | undefined {
 	let commandCallback: CommandCallback | undefined;
 
@@ -32,17 +47,11 @@ function getDisposableOfCommand(command: CommandWithCallback): Disposable {
 	return commands.registerCommand(command.command, command.callback);
 }
 
-export const commandList: CommandWithCallback[] = (contributes.commands as Command[])
-	.map((command): CommandWithCallback | void => {
-		const callbackOfCommand = getCallbackOfCommand(command);
-		if (callbackOfCommand) {
-			return { ...command, callback: callbackOfCommand };
-		}
-	})
-	.filter((maybeCommandWithCallback): maybeCommandWithCallback is CommandWithCallback => {
-		return maybeCommandWithCallback !== undefined;
-	});
+export let commandWithCallbackList: CommandWithCallback[] = [];
+if (contributes.hasOwnProperty('commands')) {
+	commandWithCallbackList.push(...getValidCommandWithCallbackList(contributes.commands));
+}
 
-export const disposableList: Disposable[] = commandList.map((command) => {
-	return getDisposableOfCommand(command);
+export const disposableList: Disposable[] = commandWithCallbackList.map((commandWithCallback) => {
+	return getDisposableOfCommand(commandWithCallback);
 });
