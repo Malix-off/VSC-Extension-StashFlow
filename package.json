@@ -52,45 +52,60 @@
 		"configuration": {
 			"title": "StashFlow",
 			"properties": {
-				"stashflow.branchSwitchingOutAction": {
+				"stashflow.action.branch.out": {
+					"order": 0,
 					"type": "string",
-					"default": "prompt",
 					"enum": [
 						"prompt",
 						"stash",
 						"stashIncludeUntracked",
 						"stashStaged",
-						"rebase"
+						"none"
 					],
-					"markdownDescription": "The Action to Execute when Switching Out of A Branch with Uncommitted Changes."
+					"default": "prompt",
+					"enumItemLabels": [
+						"Prompt",
+						"Stash",
+						"Stash (Include Untracked)",
+						"Stash Staged",
+						"None"
+					],
+					"markdownEnumDescriptions": [
+						"",
+						"`git stash push` [_(docs)_](https://git-scm.com/docs/git-stash)\n\n> Save your local modifications to a new stash entry and roll them back to HEAD",
+						"`git stash push --include-untracked` [_(docs)_](https://git-scm.com/docs/git-stas)\n\n> Save your local modifications to a new stash entry and roll them back to HEAD\n\n> All untracked files are also stashed and then cleaned up with `git clean` [_(docs)_](https://git-scm.com/docs/git-clean)",
+						"`git stash push --staged` [_(docs)_](https://git-scm.com/docs/git-stash)\n\n> Save your local modifications to a new stash entry and roll them back to HEAD\n\n> Stash only the changes that are currently staged",
+						"None _(switch branches without stashing)_"
+					],
+					"description": "Action to execute when switching out of a branch which has uncommitted changes"
 				},
-				"stashflow.branchSwitchingBackAction": {
+				"stashflow.action.branch.into": {
+					"order": 1,
 					"type": "string",
-					"default": "pop",
 					"enum": [
 						"prompt",
 						"pop",
 						"apply",
-						"nothing"
+						"none"
 					],
-					"markdownDescription": "The Action to Execute when Switching Back to A Branch with Uncommitted Changes Previously Stashed by StashFlow."
+					"default": "pop",
+					"enumItemLabels": [
+						"Prompt",
+						"Pop",
+						"Apply",
+						"None"
+					],
+					"markdownEnumDescriptions": [
+						"",
+						"`git stash pop` [_(docs)_](https://git-scm.com/docs/git-stash)\n\n> Remove a single stashed state from the stash list and apply it on top of the current working tree state",
+						"`git stash apply` [_(docs)_](https://git-scm.com/docs/git-stash)\n\n> Like pop, but do not remove the state from the stash list",
+						"None _(switch branches without poping or applying the stash)_"
+					],
+					"description": "Action to execute when switching back into a branch which has uncommitted changes stashed by StashFlow"
 				}
 			}
 		},
-		"commands": [
-			{
-				"command": "stashflow.changeOutAction",
-				"category": "StashFlow",
-				"title": "Change Branch Switching Out Action",
-				"icon": "$(debug-step-out)"
-			},
-			{
-				"command": "stashflow.changeBackAction",
-				"category": "StashFlow",
-				"title": "Change Branch Switching Back Action",
-				"icon": "$(debug-step-into)"
-			}
-		]
+		"commands": []
 	},
 	"sponsor": {
 		"url": "https://github.com/sponsors/Malix-off"
