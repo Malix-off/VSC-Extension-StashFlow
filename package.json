@@ -11,7 +11,7 @@
 	"qna": "marketplace",
 	"scripts": {
 		"build": "tsc && vite build",
-		"watch": "pnpm run build --watch",
+		"watch": "pnpm run build -- --watch",
 		"vscode:prepublish": "pnpm run build"
 	},
 	"repository": {
