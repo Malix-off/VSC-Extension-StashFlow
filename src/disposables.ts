@@ -1,5 +1,5 @@
 import { contributes } from '../package.json';
-import { commands, Disposable, Command } from "vscode";
+import { commands, Disposable, Command } from 'vscode';
 
 type CommandCallback = Parameters<typeof commands.registerCommand>[1];
 
@@ -7,10 +7,12 @@ interface CommandWithCallback extends Command {
 	callback: CommandCallback,
 }
 
-function getValidCommandWithCallback(command: Command): CommandWithCallback | void {
+function getValidCommandWithCallback(command: Command): CommandWithCallback | undefined {
 	const callbackOfCommand = getCallbackOfCommand(command);
 	if (callbackOfCommand) {
 		return { ...command, callback: callbackOfCommand };
+	} else {
+		return undefined;
 	}
 }
 
