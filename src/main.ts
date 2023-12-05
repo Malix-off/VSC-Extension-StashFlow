@@ -1,9 +1,11 @@
 import { ExtensionContext } from 'vscode';
-import { disposableList } from './disposables';
+import { commandDisposableList } from './commands';
 
 export function activate(context: ExtensionContext): void {
 	console.log('StashFlow Activated');
-	context.subscriptions.push(...disposableList);
+	context.subscriptions.push(
+		...commandDisposableList,
+	);
 }
 
 export function deactivate(): void {

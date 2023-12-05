@@ -54,6 +54,6 @@ if (contributes.hasOwnProperty('commands')) {
 	commandWithCallbackList.push(...getValidCommandWithCallbackList(contributes.commands));
 }
 
-export const disposableList: Disposable[] = commandWithCallbackList.map((commandWithCallback) => {
+export const commandDisposableList: Disposable[] = commandWithCallbackList.map((commandWithCallback) => {
 	return getDisposableOfCommand(commandWithCallback);
 });
