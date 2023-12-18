@@ -11,6 +11,20 @@
 			"problemMatcher": [],
 			"label": "npm: build",
 			"detail": "pnpm run build"
+		},
+		{
+			"label": "Update: vscodeGitExtension",
+			"detail": "Source: `https://raw.githubusercontent.com/microsoft/vscode/main/extensions/git/src/api/git.d.ts`, Desination: `lib/vscodeGitExtension.d.ts`",
+			"type": "shell",
+			"command": "curl",
+			"args": [
+				"https://raw.githubusercontent.com/microsoft/vscode/main/extensions/git/src/api/git.d.ts",
+				{
+					"value": "--output lib/vscodeGitExtension.d.ts",
+					"quoting": "weak"
+				}
+			],
+			"problemMatcher": []
 		}
 	]
 }
