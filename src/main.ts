@@ -9,7 +9,7 @@ export function activate(context: ExtensionContext): void {
 	console.log('StashFlow Activated');
 	context.subscriptions.push(
 		...initialCommandDisposableList,
-		...initialGitDisposablesList
+		...initialGitDisposablesList,
 	);
 }
 
