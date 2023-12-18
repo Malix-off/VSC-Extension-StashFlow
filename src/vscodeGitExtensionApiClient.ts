@@ -1,7 +1,6 @@
-import { extensions, Disposable, ExtensionContext, Uri } from 'vscode';
+import { extensions, Disposable, Uri } from 'vscode';
 import { API, GitExtension, Repository, RepositoryState } from '../lib/vscodeGitExtension';
-
-const context: ExtensionContext;
+import { extensionContext } from './main';
 
 interface IRepositoryWithPreviousState extends Repository {
 	previousState: RepositoryState;
@@ -78,7 +77,7 @@ function handleStashRename(repository: IRepositoryWithPreviousState): void {
 
 function getDisposableOfRepositoryOpened(api: IAPIWithPreviousRepositories): Disposable {
 	return api.onDidOpenRepository((repository: Repository) => {
-		context.subscriptions.push(
+		extensionContext.subscriptions.push(
 			getDisposablesOfRepository(
 				initializeIRepositoryWithPreviousState(repository)
 			)
