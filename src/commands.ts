@@ -8,7 +8,7 @@ interface CommandWithCallback extends Command {
 }
 
 function getValidCommandWithCallback(command: Command): CommandWithCallback | undefined {
-	const callbackOfCommand = getCallbackOfCommand(command);
+	const callbackOfCommand = getCallback(command);
 	if (callbackOfCommand) {
 		return { ...command, callback: callbackOfCommand };
 	} else {
@@ -24,28 +24,28 @@ function getValidCommandWithCallbackList(commandList: Command[]): CommandWithCal
 		});
 }
 
-function getCallbackOfCommand(command: Command): CommandCallback | undefined {
-	let commandCallback: CommandCallback | undefined;
+function getCallback(command: Command): CommandCallback | undefined {
+	let callback: CommandCallback | undefined;
 
 	switch (command.command) {
 		case ('stashflow.changeOutAction'): {
-			commandCallback = console.log;
+			callback = console.log;
 			break;
 		}
 		case ('stashflow.changeBackAction'): {
-			commandCallback = console.log;
+			callback = console.log;
 			break;
 		}
 		default: {
 			console.error(`Callback of command "${command.command}" is not implemented`);
-			commandCallback = undefined;
+			callback = undefined;
 		}
 	}
 
-	return commandCallback;
+	return callback;
 }
 
-function getDisposableOfCommand(command: CommandWithCallback): Disposable {
+function getDisposable(command: CommandWithCallback): Disposable {
 	return commands.registerCommand(command.command, command.callback);
 }
 
@@ -54,6 +54,6 @@ if (contributes.hasOwnProperty('commands')) {
 	commandWithCallbackList.push(...getValidCommandWithCallbackList(contributes.commands));
 }
 
-export const commandDisposableList: Disposable[] = commandWithCallbackList.map((commandWithCallback) => {
-	return getDisposableOfCommand(commandWithCallback);
+export const initialDisposablesList: Disposable[] = commandWithCallbackList.map((commandWithCallback) => {
+	return getDisposable(commandWithCallback);
 });
