@@ -1,6 +1,6 @@
 import { extensions, Disposable } from 'vscode';
 import { API, GitExtension, Repository } from '../lib/vscodeGitExtension';
-import { extensionContext } from './main';
+import { extensionContextGlobal } from './main';
 
 interface IRepositoryWithPreviousState extends Repository {
 	previousState: Repository["state"];
@@ -91,7 +91,7 @@ function actualizePreviousState(repository: IRepositoryWithPreviousState): void 
 
 function getDisposableOfRepositoryOpened(api: IAPIWithPreviousRepositories): APIDisposable {
 	return api.onDidOpenRepository((repository) => {
-		extensionContext.subscriptions.push(
+		extensionContextGlobal.subscriptions.push(
 			...getDisposablesOfRepository(
 				initializeIRepositoryWithPreviousState(repository)
 			)

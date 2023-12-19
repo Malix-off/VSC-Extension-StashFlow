@@ -2,12 +2,12 @@ import { Activate, Deactivate, ExtensionContext } from 'vscode';
 import { initialDisposablesList as initialCommandDisposableList } from './commands';
 import { initialDisposablesList as initialGitDisposablesList } from './vscodeGitExtensionApiClient';
 
-export let extensionContext: ExtensionContext;
+export var extensionContextGlobal: ExtensionContext;
 
-export const activate: Activate = function (context) {
-	extensionContext = context;
+export const activate: Activate = function (extensionContext) {
+	extensionContextGlobal = extensionContext;
 	console.log('StashFlow Activated');
-	context.subscriptions.push(
+	extensionContextGlobal.subscriptions.push(
 		...initialCommandDisposableList,
 		...initialGitDisposablesList,
 	);
