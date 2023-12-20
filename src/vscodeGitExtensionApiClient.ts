@@ -18,10 +18,23 @@ function initializeIRepositoryWithPreviousState(repository: Repository): IReposi
 	};
 }
 
+function initializeIAPIWithPreviousRepositories(api: API): IAPIWithPreviousRepositories {
+	const initializedIRepositoriesWithPreviousState = api.repositories.map((repository) => initializeIRepositoryWithPreviousState(repository));
+	return {
+		...api,
+		repositories: initializedIRepositoriesWithPreviousState,
+		previousRepositories: initializedIRepositoriesWithPreviousState,
+	};
+}
+
 type RepositoryDisposable = Disposable;
 type APIDisposable = Disposable;
 
 let repositoryDisposablesMap: Map<IRepositoryWithPreviousState["rootUri"], RepositoryDisposable[]> = new Map();
+
+const vscodeGitExtensionApiInstance: IAPIWithPreviousRepositories = initializeIAPIWithPreviousRepositories(
+	extensions.getExtension<GitExtension>('vscode.git')!.exports.getAPI(1)
+);
 
 function getDisposablesOfRepository(repository: IRepositoryWithPreviousState): RepositoryDisposable[] {
 	const repositoryDisposables: RepositoryDisposable[] = [
@@ -38,19 +51,6 @@ function disposeDisposablesOfRepository(repository: IRepositoryWithPreviousState
 		});
 	repositoryDisposablesMap.delete(repository.rootUri)!;
 }
-
-function initializeIAPIWithPreviousRepositories(api: API): IAPIWithPreviousRepositories {
-	const initializedIRepositoriesWithPreviousState = api.repositories.map((repository) => initializeIRepositoryWithPreviousState(repository));
-	return {
-		...api,
-		repositories: initializedIRepositoriesWithPreviousState,
-		previousRepositories: initializedIRepositoriesWithPreviousState,
-	};
-}
-
-const vscodeGitExtensionApiInstance: IAPIWithPreviousRepositories = initializeIAPIWithPreviousRepositories(
-	extensions.getExtension<GitExtension>('vscode.git')!.exports.getAPI(1),
-);
 
 function getDisposableOfRepositoryStateChange(repository: IRepositoryWithPreviousState): RepositoryDisposable {
 	return repository.state.onDidChange(() => {
@@ -105,9 +105,7 @@ function getDisposableOfRepositoryClosed(api: IAPIWithPreviousRepositories): API
 	});
 }
 
-const initialInitializedRepositories = vscodeGitExtensionApiInstance.repositories;
-
-const initialInitializedRepositoriesDisposables: RepositoryDisposable[] = initialInitializedRepositories
+const initialInitializedRepositoriesDisposables: RepositoryDisposable[] = vscodeGitExtensionApiInstance.repositories
 	.map((repository) => getDisposablesOfRepository(repository))
 	.flat();
 
