@@ -1,116 +1,129 @@
-import { extensions, Disposable } from 'vscode';
+import { extensions, Disposable, createDisposable } from 'vscode';
 import { API, GitExtension, Repository } from '../lib/vscodeGitExtension';
 import { extensionContextGlobal } from './main';
 
-interface IRepositoryWithPreviousState extends Repository {
-	previousState: Repository["state"];
-}
+var vscodeGitExtensionApiInstance: API = extensions.getExtension<GitExtension>('vscode.git')!.exports.getAPI(1);
 
-interface IAPIWithPreviousRepositories extends API {
-	repositories: IRepositoryWithPreviousState[];
-	previousRepositories: IAPIWithPreviousRepositories["repositories"];
-}
-
-function initializeIRepositoryWithPreviousState(repository: Repository): IRepositoryWithPreviousState {
-	return {
-		...repository,
-		previousState: repository.state,
+module repositoryManager {
+	type Key = Repository['rootUri'];
+	type Value = {
+		previousState: Repository['state'] | undefined,
+		disposableList: disposableManager.RepositoryDisposable[],
 	};
-}
 
-function initializeIAPIWithPreviousRepositories(api: API): IAPIWithPreviousRepositories {
-	const initializedIRepositoriesWithPreviousState = api.repositories.map((repository) => initializeIRepositoryWithPreviousState(repository));
-	return {
-		...api,
-		repositories: initializedIRepositoriesWithPreviousState,
-		previousRepositories: initializedIRepositoriesWithPreviousState,
-	};
-}
+	const map: Map<Key, Value> = new Map();
 
-type RepositoryDisposable = Disposable;
-type APIDisposable = Disposable;
-
-let repositoryDisposablesMap: Map<IRepositoryWithPreviousState["rootUri"], RepositoryDisposable[]> = new Map();
-
-const vscodeGitExtensionApiInstance: IAPIWithPreviousRepositories = initializeIAPIWithPreviousRepositories(
-	extensions.getExtension<GitExtension>('vscode.git')!.exports.getAPI(1)
-);
-
-function getDisposablesOfRepository(repository: IRepositoryWithPreviousState): RepositoryDisposable[] {
-	const repositoryDisposables: RepositoryDisposable[] = [
-		getDisposableOfRepositoryStateChange(repository),
-	];
-	repositoryDisposablesMap.set(repository.rootUri, repositoryDisposables);
-	return repositoryDisposables;
-}
-
-function disposeDisposablesOfRepository(repository: IRepositoryWithPreviousState) {
-	repositoryDisposablesMap.get(repository.rootUri)!
-		.forEach((disposable: Disposable) => {
-			disposable.dispose();
-		});
-	repositoryDisposablesMap.delete(repository.rootUri)!;
-}
-
-function getDisposableOfRepositoryStateChange(repository: IRepositoryWithPreviousState): RepositoryDisposable {
-	return repository.state.onDidChange(() => {
-		console.log(repository.state);
-		// repository.previousState != repository.state
-		// if (
-		// 	// branch change
-		// ) {
-		// 	handleBranchChange(repository);
-		// } else if (
-		// 	// branch rename
-		// ) {
-		// 	handleBranchRename(repository);
-		// } else if (
-		// 	// stash rename
-		// ) {
-		// 	handleStashRename(repository);
-		// }
-		actualizePreviousState(repository);
-	});
-}
-
-function actualizePreviousState(repository: IRepositoryWithPreviousState): void {
-	repository.previousState = repository.state;
-}
-
-// function handleBranchRename(repository: IRepositoryWithPreviousState): void {
-// 	// repository.previousState != repository.state
-// }
-
-// function handleBranchChange(repository: IRepositoryWithPreviousState): void {
-// 	// repository.previousState != repository.state
-// }
-
-// function handleStashRename(repository: IRepositoryWithPreviousState): void {
-// 	// repository.previousState != repository.state
-// }
-
-function getDisposableOfRepositoryOpened(api: IAPIWithPreviousRepositories): APIDisposable {
-	return api.onDidOpenRepository((repository) => {
-		extensionContextGlobal.subscriptions.push(
-			...getDisposablesOfRepository(
-				initializeIRepositoryWithPreviousState(repository)
-			)
+	export function add(repository: Repository) {
+		return map.set(
+			repository.rootUri,
+			{
+				previousState: undefined,
+				disposableList: disposableManager.initializeRepositoryDisposables(repository),
+			}
 		);
-	});
+	}
+
+	export function getPreviousState(repository: Repository) {
+		return map.get(repository.rootUri)!.previousState;
+	}
+
+	export function actualizePreviousState(repository: Repository) {
+		map.get(repository.rootUri)!.previousState = repository.state;
+	}
+
+	export function pushDisposables(repository: Repository, disposables: Value['disposableList']) {
+		return map.get(repository.rootUri)!.disposableList.push(...disposables);
+	}
+
+	export function remove(repository: Repository) {
+		map.get(repository.rootUri)!.disposableList
+			.forEach((disposable) => {
+				disposable.dispose();
+			});
+		return map.delete(repository.rootUri)!;
+	}
 }
 
-function getDisposableOfRepositoryClosed(api: IAPIWithPreviousRepositories): APIDisposable {
-	return api.onDidCloseRepository((repository) => {
-		disposeDisposablesOfRepository(repository as IRepositoryWithPreviousState);
-	});
+module disposableManager {
+	export type RepositoryDisposable = Disposable;
+	export type APIDisposable = Disposable;
+
+
+	const initialRepositoryDisposables: ((repository: Repository) => RepositoryDisposable)[] = [
+		StateChangeDisposableOf,
+	];
+
+	const initialAPIDisposables: ((api: API) => APIDisposable)[] = [
+		disposableOfRepositoryOpened,
+		disposableOfRepositoryClosed,
+	];
+
+	function StateChangeDisposableOf(repository: Repository): RepositoryDisposable {
+		return createDisposable(
+			extensionContextGlobal,
+			repository.state.onDidChange(() => {
+				console.log(`Repository: ${repository.rootUri}\nEvent: State Changed\nPrevious: ${repositoryManager.getPreviousState(repository)}\nNew: ${repository.state}`);
+				/*
+					if (
+						// Branch Changed
+					) {
+						Actions.handleBranchChange(repository);
+					} else if (
+						// Branch Renamed
+					) {
+						Actions.handleBranchRename(repository);
+					} else if (
+						// Stash Renamed
+					) {
+						Actions.handleStashRename(repository);
+					}
+				*/
+				repositoryManager.actualizePreviousState(repository);
+			})
+		);
+	}
+
+	function disposableOfRepositoryOpened(api: API): APIDisposable {
+		return createDisposable(
+			extensionContextGlobal,
+			api.onDidOpenRepository((repository) => {
+				repositoryManager.add(repository);
+			})
+		);
+	}
+
+	function disposableOfRepositoryClosed(api: API): APIDisposable {
+		return createDisposable(
+			extensionContextGlobal,
+			api.onDidCloseRepository((repository) => {
+				repositoryManager.remove(repository);
+			})
+		);
+	}
+
+	export function initializeRepositoryDisposables(repository: Repository): RepositoryDisposable[] {
+		return initialRepositoryDisposables.map((disposable) => disposable(repository));
+	}
+
+	export function initializeAPIDisposables(api: API): APIDisposable[] {
+		return initialAPIDisposables.map((disposable) => disposable(api));
+	}
 }
 
-const initialInitializedRepositoriesDisposables: RepositoryDisposable[] = vscodeGitExtensionApiInstance.repositories
-	.map((repository) => getDisposablesOfRepository(repository))
-	.flat();
+/*
+	namespace actions {
+		export function handleBranchRename(repository: Repository): void {
+		}
 
-export const initialDisposablesList: Disposable[] = [
-	...initialInitializedRepositoriesDisposables,
-	getDisposableOfRepositoryOpened(vscodeGitExtensionApiInstance),
-	getDisposableOfRepositoryClosed(vscodeGitExtensionApiInstance),
-];
+		export function handleBranchChange(repository: Repository): void {
+		}
+
+		export function handleStashRename(repository: Repository): void {
+		}
+	}
+*/
+
+export default function main(): void {
+	vscodeGitExtensionApiInstance.repositories.forEach((repository) => repositoryManager.add(repository));
+	disposableManager.initializeAPIDisposables(vscodeGitExtensionApiInstance);
+}

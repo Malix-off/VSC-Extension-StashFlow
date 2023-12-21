@@ -1,5 +1,6 @@
 import { contributes } from '../package.json';
-import { commands, Disposable, Command } from 'vscode';
+import { commands, Disposable, Command, createDisposable } from 'vscode';
+import { extensionContextGlobal } from './main';
 
 type CommandCallback = Parameters<typeof commands.registerCommand>[1];
 
@@ -46,14 +47,19 @@ function getCallback(command: Command): CommandCallback | undefined {
 }
 
 function getDisposable(command: CommandWithCallback): Disposable {
-	return commands.registerCommand(command.command, command.callback);
+	return createDisposable(
+		extensionContextGlobal,
+		commands.registerCommand(command.command, command.callback)
+	);
 }
 
-export let commandWithCallbackList: CommandWithCallback[] = [];
+let commandWithCallbackList: CommandWithCallback[] = [];
 if (contributes.hasOwnProperty('commands')) {
 	commandWithCallbackList.push(...getValidCommandWithCallbackList(contributes.commands));
 }
 
-export const initialDisposablesList: Disposable[] = commandWithCallbackList.map((commandWithCallback) => {
-	return getDisposable(commandWithCallback);
-});
+export default function main(): void {
+	commandWithCallbackList.forEach((commandWithCallback) => {
+		return getDisposable(commandWithCallback);
+	});
+}
