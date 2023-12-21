@@ -4,13 +4,13 @@ import vscodeGitExtensionApiClient from './vscodeGitExtensionApiClient';
 
 export var extensionContextGlobal: ExtensionContext;
 
-export const activate: Activate = function (extensionContext) {
+export const activate: Activate = (extensionContext) => {
 	extensionContextGlobal = extensionContext;
 	console.log('StashFlow Activated');
 	commands();
 	vscodeGitExtensionApiClient();
 }
 
-export const deactivate: Deactivate = function () {
+export const deactivate: Deactivate = () => {
 	console.log('StashFlow Deactivated');
 }

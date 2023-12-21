@@ -27,8 +27,12 @@ function getValidCommandWithCallbackList(commandList: Command[]): CommandWithCal
 
 function getCallback(command: Command): CommandCallback | undefined {
 	switch (command.command) {
-		case ('stashflow.changeOutAction'): return console.log;
-		case ('stashflow.changeBackAction'): return console.log;
+		case ('stashflow.changeOutAction'): {
+			return console.log;
+		}
+		case ('stashflow.changeBackAction'): {
+			return console.log;
+		}
 		default: {
 			console.error(`Callback of command "${command.command}" is not implemented`);
 			return undefined;
@@ -48,5 +52,7 @@ let commandWithCallbackList: CommandWithCallback[] = [
 ];
 
 export default function main(): void {
-	commandWithCallbackList.forEach((commandWithCallback) => getDisposable(commandWithCallback));
+	commandWithCallbackList.forEach((commandWithCallback) => {
+		return getDisposable(commandWithCallback);
+	});
 }
